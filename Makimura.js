@@ -7,12 +7,12 @@ let svgText = "";
 
 async function fetchBlocklistAndSVG() {
   // Fetch blocklist from GitHub
-  const blocklistResponse = await fetch('https://raw.githubusercontent.com/TheRyoSaeba/VPNCloudflareBlock/main/BlockList');
+  const blocklistResponse = await fetch('https://raw.githubusercontent.com/AndrewAubury/VPNCloudflareBlock/main/BlockList');
   const blocklistText = await blocklistResponse.text();
   blocklist = blocklistText.split('\n').map(item => item.trim());
 
   // Fetch SVG from GitHub
-  const svgResponse = await fetch('https://raw.githubusercontent.com/TheRyoSaeba/VPNCloudflareBlock/main/ErrorImage');
+  const svgResponse = await fetch('https://raw.githubusercontent.com/AndrewAubury/VPNCloudflareBlock/main/ErrorImage');
   svgText = await svgResponse.text();
   
 }
@@ -29,26 +29,26 @@ async function fetchBlocklistAndSVG() {
   const cache = caches.default;
 
   // Try to find the blocklist in the cache
-  let blocklistResponse = await cache.match('https://raw.githubusercontent.com/TheRyoSaeba/VPNCloudflareBlock/main/BlockList');
+  let blocklistResponse = await cache.match('https://raw.githubusercontent.com/AndrewAubury/VPNCloudflareBlock/main/BlockList');
 
   // If the blocklist isn't in the cache or it's older than one hour, fetch it from GitHub
   if (!blocklistResponse || (new Date().getTime() - new Date(blocklistResponse.headers.get('date')).getTime()) > 3600000) {
-    blocklistResponse = await fetch('https://raw.githubusercontent.com/TheRyoSaeba/VPNCloudflareBlock/main/BlockList');
+    blocklistResponse = await fetch('https://raw.githubusercontent.com/AndrewAubury/VPNCloudflareBlock/main/BlockList');
     // Put the new blocklist in the cache
-    await cache.put('https://raw.githubusercontent.com/TheRyoSaeba/VPNCloudflareBlock/main/BlockList', blocklistResponse.clone());
+    await cache.put('https://raw.githubusercontent.com/AndrewAubury/VPNCloudflareBlock/main/BlockList', blocklistResponse.clone());
   }
 
   const blocklistText = await blocklistResponse.text();
   blocklist = new Set(blocklistText.split('\n').map(item => item.trim()));
 
   // Try to find the SVG in the cache
-  let svgResponse = await cache.match('https://raw.githubusercontent.com/TheRyoSaeba/VPNCloudflareBlock/main/ErrorImage');
+  let svgResponse = await cache.match('https://raw.githubusercontent.com/AndrewAubury/VPNCloudflareBlock/main/ErrorImage');
 
   // If the SVG isn't in the cache or it's older than 12 hours , fetch it from GitHub
   if (!svgResponse || (new Date().getTime() - new Date(svgResponse.headers.get('date')).getTime()) > 43200000) {
-    svgResponse = await fetch('https://raw.githubusercontent.com/TheRyoSaeba/VPNCloudflareBlock/main/ErrorImage');
+    svgResponse = await fetch('https://raw.githubusercontent.com/AndrewAubury/VPNCloudflareBlock/main/ErrorImage');
     // Put the new SVG in the cache
-    await cache.put('https://raw.githubusercontent.com/TheRyoSaeba/VPNCloudflareBlock/main/ErrorImage', svgResponse.clone());
+    await cache.put('https://raw.githubusercontent.com/AndrewAubury/VPNCloudflareBlock/main/ErrorImage', svgResponse.clone());
   }
 
   svgText = await svgResponse.text();
